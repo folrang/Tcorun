@@ -1,0 +1,18 @@
+﻿1) TCP 메시지 규격(프로토타입, 무압축/무암호화)
+프레이밍:
+[4바이트 총 길이 (Little Endian)] + [헤더 (20바이트)] + [Payload (가변)]
+헤더(20바이트)
+
+오프셋	크기	필드	설명
+0	2	Magic(0x4D50)	“MP” 식별자
+2	1	Version	프로토콜 버전 (예: 1)
+3	1	Flags	0 (압축/암호화 없음)
+4	2	MsgType	0=Handshake, 1=Data, 2=Ack, 3=Error…
+6	2	ErrorCode	0=OK (그 외 도메인/프로토콜 오류)
+8	8	RequestId	요청 상관관계(64-bit)
+16	4	PayloadLen	Payload 길이(바이트)
+
+
+장래에 압축/암호화가 필요해지면 Flags 와 추가 필드(알고리즘 ID 등)를 재도입하기 쉬운 형태로 유지했습니다.
+
+
