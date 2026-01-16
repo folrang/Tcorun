@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="greeter.proto" />
+    <None Remove="python.proto" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.33.4" />
@@ -18,9 +22,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Protobuf Include="..\Server\Protos\greeter.proto" GrpcServices="Client" />
+    <Protobuf Include="greeter.proto" GrpcServices="Client" />
+    <Protobuf Include="python.proto" GrpcServices="Client" />
   </ItemGroup>
   
   <ItemGroup>
@@ -29,4 +34,5 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
 </ItemGroup>
+
 </Project>

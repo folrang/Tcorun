@@ -46,6 +46,20 @@ if exist "%ProjectDir%Certs" (
     echo [경고] Certs 폴더를 찾을 수 없습니다: %ProjectDir%Certs
 )
 
+rem Scripts 폴더 복사 (상위 폴더에서)
+if exist "%ProjectDir%..\scripts" (
+    REM echo Scripts 폴더를 %OutDir%scripts로 복사 중...
+    xcopy /E /I /Y "%ProjectDir%..\scripts" "%OutDir%scripts"
+    if %ERRORLEVEL% EQU 0 (
+        echo [성공] Scripts 폴더 복사 완료
+    ) else (
+        echo [실패] Scripts 폴더 복사 실패
+        exit /b %ERRORLEVEL%
+    )
+) else (
+    echo [경고] Scripts 폴더를 찾을 수 없습니다: %ProjectDir%..\scripts
+)
+
 REM echo ====================================
 echo Post-Build 완료
 REM echo ====================================

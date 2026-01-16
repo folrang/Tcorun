@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 //using MySql.Data.MySqlClient;
 using Services;             // TcpServerService
 using Services.Grpc;        // GreeterService
+using Services.Python;      // PythonExecutorService
 using StackExchange.Redis;
 using System.Net;
 
@@ -63,6 +64,9 @@ namespace Dmond
             });
             builder.Services.AddSingleton<Data.RedisClient>();
 
+            // --- Python 실행 서비스 ---
+            builder.Services.AddSingleton<PythonExecutorService>();
+
             // --- 고성능 TCP 서버 (SocketAsyncEventArgs) ---
             builder.Services.AddHostedService<TcpServerService>();
 
@@ -70,20 +74,9 @@ namespace Dmond
 
             app.MapControllers();                 // REST
             app.MapGrpcService<GreeterService>(); // gRPC
-
-            // TEST
-            //{
-            //    // http://localhost:8080/api/logs 를 테스트 목적으로 호출하는 코드
-
-            //    using var httpClient = new HttpClient();
-            //    var response = httpClient.GetAsync("http://localhost:8080/api/logs").Result;
-            //    var content = response.Content.ReadAsStringAsync().Result;
-            //    Console.WriteLine("Test GET /api/logs response:");
-            //    Console.WriteLine(content);
-            //}
+            app.MapGrpcService<PythonService>();  // Python gRPC
 
             app.Run();
-
         }
     }
 }

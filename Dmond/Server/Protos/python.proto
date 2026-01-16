@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+option csharp_namespace = "Services.Grpc";
+
+package python;
+
+// Python 스크립트 실행 서비스
+service Python {
+  // 임의의 Python 스크립트 실행
+  rpc ExecuteScript (ExecuteScriptRequest) returns (ExecuteScriptResponse);
+  
+  // 차트 생성
+  rpc GenerateChart (GenerateChartRequest) returns (GenerateChartResponse);
+  
+  // 기술적 분석 수행
+  rpc AnalyzeTechnicalIndicators (AnalyzeRequest) returns (AnalyzeResponse);
+  
+  // 거래 데이터 가져오기
+  rpc FetchTradingData (FetchTradingDataRequest) returns (FetchTradingDataResponse);
+}
+
+// 스크립트 실행 요청
+message ExecuteScriptRequest {
+  string script_name = 1;
+  map<string, string> parameters = 2;
+  int32 timeout_seconds = 3;
+}
+
+// 스크립트 실행 응답
+message ExecuteScriptResponse {
+  bool success = 1;
+  int32 exit_code = 2;
+  string output = 3;
+  string error = 4;
+  int64 execution_time_ms = 5;
+}
+
+// 차트 생성 요청
+message GenerateChartRequest {
+  string symbol = 1;
+  string start_date = 2;  // yyyy-MM-dd 형식
+  string end_date = 3;    // yyyy-MM-dd 형식
+  string chart_type = 4;  // "candlestick", "line", "ohlc" 등
+}
+
+// 차트 생성 응답
+message GenerateChartResponse {
+  bool success = 1;
+  string chart_path = 2;
+  string error = 3;
+  int64 execution_time_ms = 4;
+}
+
+// 기술적 분석 요청
+message AnalyzeRequest {
+  string symbol = 1;
+  repeated string indicators = 2;  // "RSI", "MACD", "BB" 등
+}
+
+// 기술적 분석 응답
+message AnalyzeResponse {
+  bool success = 1;
+  string analysis_json = 2;  // JSON 형식의 분석 결과
+  string error = 3;
+  int64 execution_time_ms = 4;
+}
+
+// 거래 데이터 요청
+message FetchTradingDataRequest {
+  string exchange = 1;   // "binance", "upbit" 등
+  string symbol = 2;     // "BTC/USDT" 등
+  string timeframe = 3;  // "1h", "1d" 등
+  int32 limit = 4;       // 데이터 개수
+}
+
+// 거래 데이터 응답
+message FetchTradingDataResponse {
+  bool success = 1;
+  string data_json = 2;  // JSON 형식의 OHLCV 데이터
+  string error = 3;
+  int64 execution_time_ms = 4;
+}
